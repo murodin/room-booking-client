@@ -15,14 +15,15 @@ export class RoomsComponent implements OnInit {
   rooms: Array<Room>;
   selectedRoom: Room;
 
-  hero$: Observable<Room>;
-
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
               private router: Router) { }
 
   ngOnInit() {
-    this.rooms = this.dataService.rooms;
+     this.dataService.getRooms().subscribe(
+       (next) => {
+         this.rooms = next;
+       });
 
     this.route.queryParams.subscribe(
       (params) => {

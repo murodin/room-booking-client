@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {User} from '../../model/User';
 import {DataService} from '../../data.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-users',
@@ -18,7 +19,12 @@ export class UsersComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.users = this.dataService.users;
+
+    this.dataService.getUsers().subscribe(
+      (next) => {
+        this.users = next;
+      });
+
     this.route.queryParams.subscribe((params) => {
       const id = params['id'];
       this.selectedUser = this.users.find(user => user.id === +id);
