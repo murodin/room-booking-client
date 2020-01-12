@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from '../../data.service';
 import {Room} from '../../model/Room';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-rooms',
