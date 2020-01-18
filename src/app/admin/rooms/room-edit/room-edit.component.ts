@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Layout, LayoutCapacity, Room} from '../../../model/Room';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-room-edit',
@@ -15,23 +15,36 @@ export class RoomEditComponent implements OnInit {
   layouts = Object.keys(Layout);
   layoutEnum = Layout;
 
-  roomForm = new FormGroup(
+  /*roomForm = new FormGroup(
     {
       roomName: new FormControl('roomName'),
       location: new FormControl('location')
     }
-  );
+  );*/
 
-  constructor() { }
+  roomForm: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.roomForm.patchValue({
+
+    this.roomForm =  this.formBuilder.group(
+      {
+        roomName: this.room.name,
+        location: this.room.location
+      }
+    );
+
+    /*this.roomForm.patchValue({
       roomName: this.room.name,
       location: this.room.location
-    });
+    });*/
 
     for (const layout of this.layouts) {
-      this.roomForm.addControl(`layout${layout}`, new FormControl(`layout${layout}`));
+      const layoutCap = this.room.capacities.find(lc => lc.layout === Layout[layout]);
+      const initCap =  layoutCap == null ?  0 : layoutCap.capacity;
+      //this.roomForm.addControl(`layout${layout}`, new FormControl(`layout${layout}`));
+      this.roomForm.addControl(`layout${layout}`, this.formBuilder.control(initCap));
     }
   }
 
@@ -39,6 +52,7 @@ export class RoomEditComponent implements OnInit {
     this.room.name = this.roomForm.controls['roomName'].value;
     this.room.location = this.roomForm.value['location'];
     this.room.capacities = new Array<LayoutCapacity>();
+
     for (const layout of this.layouts) {
       const layoutCapacity = new LayoutCapacity();
       layoutCapacity.layout = Layout[layout];
@@ -46,7 +60,6 @@ export class RoomEditComponent implements OnInit {
       this.room.capacities.push(layoutCapacity);
     }
 
-    console.log(this.room);
   }
 
 
