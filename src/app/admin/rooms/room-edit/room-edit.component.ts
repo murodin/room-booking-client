@@ -1,15 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Layout, LayoutCapacity, Room} from '../../../model/Room';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DataService} from '../../../data.service';
 import {Router} from '@angular/router';
+import {FormResetService} from '../../../form-reset.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-room-edit',
   templateUrl: './room-edit.component.html',
   styleUrls: ['./room-edit.component.css']
 })
-export class RoomEditComponent implements OnInit {
+export class RoomEditComponent implements OnInit, OnDestroy {
 
   @Input()
   room: Room;
@@ -26,16 +28,32 @@ export class RoomEditComponent implements OnInit {
 
   roomForm: FormGroup;
 
+  resetFormEventSubscription: Subscription;
+
   constructor(private formBuilder: FormBuilder,
               private dataService: DataService,
-              private router: Router) { }
+              private router: Router,
+              private formResetService: FormResetService) { }
 
   ngOnInit() {
+    this.initializeForm();
+    this.resetFormEventSubscription = this.formResetService.resetRoomFormEvent.subscribe(
+      room => {
+        this.room = room;
+        this.initializeForm();
+      }
+    );
+  }
 
+  ngOnDestroy() {
+    this.resetFormEventSubscription.unsubscribe();
+  }
+
+  initializeForm() {
     this.roomForm =  this.formBuilder.group(
       {
         roomName: [this.room.name, Validators.required],
-        location: [this.room.location,[Validators.required, Validators.minLength(2)]]
+        location: [this.room.location, [Validators.required, Validators.minLength(2)]]
       }
     );
 
@@ -71,7 +89,7 @@ export class RoomEditComponent implements OnInit {
         }
       );
     } else {
-      this.dataService.updateUser(this.room).subscribe(
+      this.dataService.updateRoom(this.room).subscribe(
         next => {
           this.router.navigate(['admin', 'rooms'], {queryParams: {actions: 'view', id: next.id}});
         }

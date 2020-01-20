@@ -42,7 +42,7 @@ export class DataService {
     oriRoom.name =  room.name;
     oriRoom.location = room.location;
     oriRoom.capacities = room.capacities;
-    return of(oriRoom)
+    return of(oriRoom);
   }
 
   addRoom(newRoom: Room): Observable<Room> {
