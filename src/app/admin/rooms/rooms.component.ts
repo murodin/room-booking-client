@@ -30,6 +30,7 @@ export class RoomsComponent implements OnInit {
     this.route.queryParams.subscribe(
       (params) => {
         const id = params['id'];
+        this.action = null;
         if(id) {
           this.selectedRoom = this.rooms.find(room => room.id === +id); // '4' for string to integer
           this.action = params['action'];
