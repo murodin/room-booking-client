@@ -81,6 +81,42 @@ export class DataService {
     return of(this.bookings);
   }
 
+  getBooking(id: number): Observable<Booking> {
+    return of(this.bookings.find(b => b.id === id));
+  }
+
+  saveBooking(booking: Booking): Observable<Booking> {
+    const oriBooking = this.bookings.find(b => b.id === booking.id);
+    oriBooking.date = booking.date;
+    oriBooking.startTime = booking.startTime;
+    oriBooking.endTime = booking.endTime;
+    oriBooking.user.name = booking.user.name;
+    oriBooking.participants = booking.participants;
+    oriBooking.title = booking.title;
+    oriBooking.layout = booking.layout;
+    oriBooking.room = booking.room;
+    return of(oriBooking);
+  }
+
+  addBooking(newBooking: Booking): Observable<Booking> {
+    let id = 0;
+    for (const booking of this.bookings) {
+      if (id < booking.id) {
+         id = booking.id;
+      }
+    }
+
+    newBooking.id = id + 1;
+    this.bookings.push(newBooking);
+    return of(newBooking);
+  }
+
+  deleteBooking(id: number): Observable<any> {
+    const deletedBooking = this.bookings.find(b => b.id === id);
+    this.bookings.splice(this.bookings.indexOf(deletedBooking), 1);
+    return of(null);
+  }
+
   constructor() {
     this.rooms = new Array<Room>();
     this.users = new Array<User>();
