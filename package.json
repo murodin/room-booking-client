@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start_prod": "ng serve",
     "build": "ng build",
+    "start_local": "ng serve -c local",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
