@@ -2,10 +2,6 @@ export class User {
   id: number;
   name: string;
 
-  getRole(): string {
-    return 'Standart Role';
-  }
-
   static fromHttp(user: User): User {
     const newUser = new User();
     newUser.id = user.id;

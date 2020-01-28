@@ -14,11 +14,29 @@ import {map} from 'rxjs/operators';
 export class DataService {
 
   getRooms(): Observable<Array<Room>> {
-    return of(null);
+    return this.http.get<Array<Room>>(environment.restUrl + '/api/rooms')
+      .pipe(
+        map( data => {
+          const rooms = new Array<Room>();
+          for(const room of data) {
+            rooms.push(Room.fromHttp(room));
+          }
+          return rooms;
+        })
+      );
   }
 
   getUsers(): Observable<Array<User>> {
-    return of(null);
+    return this.http.get<Array<User>>(environment.restUrl + '/api/users')
+      .pipe(
+        map( data => {
+          const users = new Array<User>();
+          for(const user of data) {
+            users.push(User.fromHttp(user));
+          }
+          return users;
+        })
+      );
   }
 
   updateUser(user: User): Observable<User> {
@@ -65,7 +83,7 @@ export class DataService {
     return of(null);
   }
 
-  deleteBooking(id : number): Observable<any> {
+  deleteBooking(id: number): Observable<any> {
     return of(null);
   }
 
