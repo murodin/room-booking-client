@@ -4,6 +4,7 @@ import {DataService} from '../data.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {formatDate} from '@angular/common';
 import {query} from '@angular/animations';
+import {User} from '../model/User';
 
 @Component({
   selector: 'app-calendar',
@@ -21,6 +22,17 @@ export class CalendarComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.dataService.getUser(13)
+      .subscribe(
+      (next: User) => {
+        console.log(next);
+        console.log(typeof next);
+
+        console.log(next.getRole());
+      }
+    );
+
     this.route.queryParams.subscribe(
       params => {
         this.selectedDate = params['date'];
