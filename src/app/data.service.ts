@@ -90,13 +90,4 @@ export class DataService {
   constructor(private http: HttpClient) {
     console.log(environment.restUrl);
   }
-
-  getUser(id: number): Observable<User> {
-    return this.http.get<User>(environment.restUrl + '/api/users/' + id)
-      .pipe(
-        map( data => {
-          return User.fromHttp(data);
-        })
-      );
-  }
 }
