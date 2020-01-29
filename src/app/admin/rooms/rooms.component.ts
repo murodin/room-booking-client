@@ -30,7 +30,11 @@ export class RoomsComponent implements OnInit {
          this.loadingData = false;
        },
        (error) => {
-         this.message = 'Sorry sth went wrong try again!';
+         if (error.status === 402) {
+           this.message = 'Sorry - You need to pay!!!';
+         } else {
+           this.message = 'Sorry - sth went wrong try again!';
+         }
        }
       );
 
