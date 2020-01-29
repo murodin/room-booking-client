@@ -16,6 +16,7 @@ export class RoomsComponent implements OnInit {
 
   action: string;
   loadingData = true;
+  message = 'Please waiting for getting data';
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
@@ -27,7 +28,11 @@ export class RoomsComponent implements OnInit {
        (next) => {
          this.rooms = next;
          this.loadingData = false;
-       });
+       },
+       (error) => {
+         this.message = 'Sorry sth went wrong try again!';
+       }
+      );
 
     this.route.queryParams.subscribe(
       (params) => {
