@@ -17,42 +17,56 @@ export class RoomsComponent implements OnInit {
   action: string;
   loadingData = true;
   message = 'Please waiting for getting data';
+  reloadAttempts = 0;
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
               private router: Router,
               private formResetService: FormResetService) { }
 
-  ngOnInit() {
+  loadData() {
      this.dataService.getRooms().subscribe(
        (next) => {
          this.rooms = next;
          this.loadingData = false;
+         this.processUrlParams();
        },
        (error) => {
          if (error.status === 402) {
-           this.message = 'Sorry - You need to pay!!!';
+            this.message = 'Sorry - You need to pay!!!';
          } else {
-           this.message = 'Sorry - sth went wrong try again!';
+            this.reloadAttempts++;
+            if (this.reloadAttempts <= 10) {
+              this.message = 'Sorry - sth went wrong trying again... please wait!';
+              this.loadData();
+            } else {
+              this.message = 'Sorry - sth went wrong, please contact support';
+            }
          }
        }
-      );
+     );
+   }
 
-    this.route.queryParams.subscribe(
-      (params) => {
-        const id = params['id'];
-        this.action = null;
-        if(id) {
-          this.selectedRoom = this.rooms.find(room => room.id === +id); // '4' for string to integer
-          this.action = params['action'];
-        }
-        if(params['action'] === 'add') {
-          this.selectedRoom =  new Room();
-          this.action = 'edit';
-          this.formResetService.resetRoomFormEvent.emit(this.selectedRoom);
-        }
-      }
-    );
+  processUrlParams() {
+     this.route.queryParams.subscribe(
+       (params) => {
+         const id = params['id'];
+         this.action = null;
+         if (id) {
+           this.selectedRoom = this.rooms.find(room => room.id === +id); // '4' for string to integer
+           this.action = params['action'];
+         }
+         if (params['action'] === 'add') {
+           this.selectedRoom =  new Room();
+           this.action = 'edit';
+           this.formResetService.resetRoomFormEvent.emit(this.selectedRoom);
+         }
+       }
+     );
+  }
+
+  ngOnInit() {
+    this.loadData();
   }
 
   setRoom(id: number) {
