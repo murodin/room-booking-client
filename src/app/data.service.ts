@@ -48,12 +48,34 @@ export class DataService {
     return this.http.post<User>(environment.restUrl + '/api/users', fullUser);
   }
 
+  private getCorrectedRoom(room: Room): Room {
+    const correctedRoom = {
+      id: room.id,
+      name: room.name,
+      location: room.location,
+      capacities: []
+    };
+
+    for (const lc of room.capacities) {
+      let corLayout;
+      for (const member in Layout) {
+        if (Layout[member] === lc.layout) {
+          corLayout = member;
+        }
+      }
+      const correctedLayout = { layout: corLayout, capacity: lc.capacity};
+      correctedRoom.capacities.push(correctedLayout);
+    }
+
+    return correctedRoom;
+  }
+
   updateRoom(room: Room): Observable<Room> {
-    return of(null);
+    return this.http.put<Room>(environment.restUrl + '/api/rooms', this.getCorrectedRoom(room));
   }
 
   addRoom(newRoom: Room): Observable<Room> {
-    return of(null);
+    return this.http.post<Room>(environment.restUrl + '/api/rooms', this.getCorrectedRoom(newRoom));
   }
 
   deleteRoom(id: number): Observable<any> {
