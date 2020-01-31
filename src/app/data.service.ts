@@ -40,7 +40,7 @@ export class DataService {
   }
 
   updateUser(user: User): Observable<User> {
-    return of(null);
+    return this.http.put<User>(environment.restUrl + '/api/users', user);
   }
 
   addUser(newUser: User, password: string): Observable<User> {
