@@ -16,12 +16,16 @@ export class CalendarComponent implements OnInit {
 
   bookings: Array<Booking>;
   selectedDate: string;
+  dataLoaded = false;
+
+  message = '';
 
   constructor(private dataService: DataService,
               private router: Router,
               private route: ActivatedRoute) { }
 
-  ngOnInit() {
+  loadData() {
+    this.message = 'Loading...';
     this.route.queryParams.subscribe(
       params => {
         this.selectedDate = params['date'];
@@ -29,10 +33,18 @@ export class CalendarComponent implements OnInit {
           this.selectedDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-GB');
         }
         this.dataService.getBookings(this.selectedDate).subscribe(
-          next => this.bookings = next
+          next => {
+            this.bookings = next;
+            this.dataLoaded = true;
+            this.message = '';
+          }, error => this.message = 'Sorry sth went wrong'
         );
       }
     );
+  }
+
+  ngOnInit() {
+   this.loadData();
   }
 
   editBooking(id: number) {
@@ -44,7 +56,16 @@ export class CalendarComponent implements OnInit {
   }
 
   deleteBooking(id: number) {
-    this.dataService.deleteBooking(id).subscribe();
+    this.message = 'Deleting...';
+    this.dataService.deleteBooking(id).subscribe(
+      next => {
+        this.message = '';
+        this.loadData();
+      },
+      error => {
+        this.message = 'sth.went wrong!!';
+      }
+    );
   }
 
   dateChanged() {
