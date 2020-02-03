@@ -3,7 +3,6 @@ import {Layout, LayoutCapacity, Room} from './model/Room';
 import {User} from './model/User';
 import {Observable, of} from 'rxjs';
 import {Booking} from './model/Booking';
-import {formatDate} from '@angular/common';
 import {environment} from '../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
@@ -104,7 +103,10 @@ export class DataService {
   }
 
   getBooking(id: number): Observable<Booking> {
-    return of(null);
+    return this.http.get<Booking>(environment.restUrl + '/api/bookings?id=' + id)
+      .pipe(
+        map(data => Booking.fromHttp(data))
+      );
   }
 
   saveBooking(booking: Booking): Observable<Booking> {
