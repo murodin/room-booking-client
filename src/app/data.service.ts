@@ -30,7 +30,7 @@ export class DataService {
       .pipe(
         map( data => {
           const users = new Array<User>();
-          for(const user of data) {
+          for (const user of data) {
             users.push(User.fromHttp(user));
           }
           return users;
