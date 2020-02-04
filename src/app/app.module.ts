@@ -15,16 +15,16 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { RoomEditComponent } from './admin/rooms/room-edit/room-edit.component';
 import { EditBookingComponent } from './calendar/edit-booking/edit-booking.component';
 import {HttpClientModule} from '@angular/common/http';
-import { EditBookingLoadComponent } from './calendar/edit-booking-load/edit-booking-load.component';
+import {PrefectchedRoomsService} from './prefectched-rooms.service';
+import {PrefectchedUsersService} from './prefectched-users.service';
 
 
 const  routes: Routes = [
   {path: 'admin/users', component: UsersComponent},
   {path: 'admin/rooms', component: RoomsComponent},
   {path: '', component: CalendarComponent},
-  {path: 'editBooking', component: EditBookingComponent},
-  {path: 'editBookingLoad', component: EditBookingLoadComponent},
-  {path: 'addBooking', component: EditBookingComponent},
+  {path: 'editBooking', component: EditBookingComponent, resolve: {rooms: PrefectchedRoomsService, users: PrefectchedUsersService}},
+  {path: 'addBooking', component: EditBookingComponent, resolve: {rooms: PrefectchedRoomsService, users: PrefectchedUsersService}},
   {path: '404', component: PageNotFoundComponent},
   {path: '**', redirectTo: '/404'}
 ];
@@ -41,8 +41,7 @@ const  routes: Routes = [
     UserDetailComponent,
     UserEditComponent,
     RoomEditComponent,
-    EditBookingComponent,
-    EditBookingLoadComponent
+    EditBookingComponent
   ],
   imports: [
     BrowserModule,
