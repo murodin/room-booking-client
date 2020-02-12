@@ -17,6 +17,7 @@ import { EditBookingComponent } from './calendar/edit-booking/edit-booking.compo
 import {HttpClientModule} from '@angular/common/http';
 import {PrefectchedRoomsService} from './prefectched-rooms.service';
 import {PrefectchedUsersService} from './prefectched-users.service';
+import { LoginComponent } from './login/login.component';
 
 
 const  routes: Routes = [
@@ -41,7 +42,8 @@ const  routes: Routes = [
     UserDetailComponent,
     UserEditComponent,
     RoomEditComponent,
-    EditBookingComponent
+    EditBookingComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
