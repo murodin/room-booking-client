@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.authService.authResultEvent.subscribe(
+    this.subscription = this.authService.authResultEvent.subscribe(
       result => {
         if (result) {
           const url = this.activatedRoute.snapshot.queryParams['requested'];
