@@ -22,6 +22,13 @@ export class AuthService {
         this.isAuthenticated = false;
         this.authResultEvent.emit(false);
       }
-    )
+    );
+  }
+
+  getRole(): string {
+    if (this.jwtToken == null) return null;
+    const encodedPayload = this.jwtToken.split(".")[1];
+    const payload = atob(encodedPayload);
+    return JSON.parse(payload).role;
   }
 }

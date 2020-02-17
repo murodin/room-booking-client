@@ -36,6 +36,7 @@ export class RoomEditComponent implements OnInit, OnDestroy {
 
   resetFormEventSubscription: Subscription;
 
+
   constructor(private formBuilder: FormBuilder,
               private dataService: DataService,
               private router: Router,
@@ -104,7 +105,7 @@ export class RoomEditComponent implements OnInit, OnDestroy {
           this.dataChangedevent.emit();
           this.router.navigate(['admin', 'rooms'], {queryParams: {actions: 'view', id: next.id}});
         },
-        (error) => this.message = 'Sth wrong...'
+        (error) => this.message = 'Sth wrong... ' + error.status
       );
     }
   }
