@@ -28,7 +28,7 @@ export class RoomsComponent implements OnInit {
               private autService: AuthService) { }
 
   loadData() {
-     this.dataService.getRooms(this.autService.jwtToken).subscribe(
+     this.dataService.getRooms().subscribe(
        (next) => {
          this.rooms = next;
          this.loadingData = false;

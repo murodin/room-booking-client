@@ -12,9 +12,10 @@ import {map} from 'rxjs/operators';
 })
 export class DataService {
 
-  getRooms(token: string): Observable<Array<Room>> {
-    const headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
-    return this.http.get<Array<Room>>(environment.restUrl + '/api/rooms', {headers})
+  getRooms(): Observable<Array<Room>> {
+    //const headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
+    //return this.http.get<Array<Room>>(environment.restUrl + '/api/rooms', {headers, withCredentials: true})
+    return this.http.get<Array<Room>>(environment.restUrl + '/api/rooms', {withCredentials: true})
       .pipe(
         map( data => {
           const rooms = new Array<Room>();
@@ -70,9 +71,8 @@ export class DataService {
     return correctedRoom;
   }
 
-  updateRoom(room: Room, token: string): Observable<Room> {
-    const headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
-    return this.http.put<Room>(environment.restUrl + '/api/rooms', this.getCorrectedRoom(room), {headers});
+  updateRoom(room: Room): Observable<Room> {
+    return this.http.put<Room>(environment.restUrl + '/api/rooms', this.getCorrectedRoom(room), {withCredentials: true});
   }
 
   addRoom(newRoom: Room): Observable<Room> {
@@ -126,7 +126,7 @@ export class DataService {
   validateUser(name: string, password: string): Observable<{result: string}> {
     const authData = btoa(`${name}:${password}`);
     const headers = new HttpHeaders().append('Authorization', 'Basic ' + authData);
-    return this.http.get<{result: string}>(environment.restUrl + '/api/basicAuth/validate', {headers: headers});
+    return this.http.get<{result: string}>(environment.restUrl + '/api/basicAuth/validate', {headers: headers, withCredentials: true});
   }
 
   constructor(private http: HttpClient) {

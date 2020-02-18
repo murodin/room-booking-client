@@ -100,7 +100,7 @@ export class RoomEditComponent implements OnInit, OnDestroy {
         (error) => this.message = 'Sth wrong...'
       );
     } else {
-      this.dataService.updateRoom(this.room, this.authService.jwtToken).subscribe(
+      this.dataService.updateRoom(this.room).subscribe(
         next => {
           this.dataChangedevent.emit();
           this.router.navigate(['admin', 'rooms'], {queryParams: {actions: 'view', id: next.id}});

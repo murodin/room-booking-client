@@ -3,6 +3,7 @@ import {Resolve} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Room} from './model/Room';
 import {DataService} from './data.service';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'

@@ -8,14 +8,14 @@ export class AuthService {
 
   isAuthenticated = false;
   authResultEvent = new EventEmitter<boolean>();
-  jwtToken: string;
+  //jwtToken: string;
 
   constructor(private dataService: DataService) { }
 
   authenticate(name: string, password: string) {
     this.dataService.validateUser(name, password).subscribe(
       next => {
-        this.jwtToken = next.result;
+        //this.jwtToken = next.result;
         this.isAuthenticated = true;
         this.authResultEvent.emit(true);
       }, error => {
@@ -26,9 +26,10 @@ export class AuthService {
   }
 
   getRole(): string {
-    if (this.jwtToken == null) return null;
+    /*if (this.jwtToken == null) return null;
     const encodedPayload = this.jwtToken.split(".")[1];
     const payload = atob(encodedPayload);
-    return JSON.parse(payload).role;
+    return JSON.parse(payload).role;*/
+    return 'ADMIN';
   }
 }
