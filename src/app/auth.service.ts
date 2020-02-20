@@ -9,6 +9,7 @@ export class AuthService {
   isAuthenticated = false;
   authResultEvent = new EventEmitter<boolean>();
   //jwtToken: string;
+  role: string;
 
   constructor(private dataService: DataService) { }
 
@@ -16,6 +17,7 @@ export class AuthService {
     this.dataService.validateUser(name, password).subscribe(
       next => {
         //this.jwtToken = next.result;
+        this.setUpRole();
         this.isAuthenticated = true;
         this.authResultEvent.emit(true);
       }, error => {
@@ -25,11 +27,9 @@ export class AuthService {
     );
   }
 
-  getRole(): string {
-    /*if (this.jwtToken == null) return null;
-    const encodedPayload = this.jwtToken.split(".")[1];
-    const payload = atob(encodedPayload);
-    return JSON.parse(payload).role;*/
-    return 'ADMIN';
+  setUpRole() {
+    this.dataService.getRole().subscribe(
+      next => this.role = next.role
+    );
   }
 }
