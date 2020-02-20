@@ -30,6 +30,7 @@ export class AuthService {
     this.dataService.getRole().subscribe(
       next => {
         this.role = next.role;
+        this.roleSetEvent.emit(next.role);
       }
     );
   }
@@ -45,5 +46,11 @@ export class AuthService {
         }
       }
     );
+  }
+
+  logout() {
+    this.dataService.logout().subscribe();
+    this.isAuthenticated = false;
+    this.authResultEvent.emit(false);
   }
 }

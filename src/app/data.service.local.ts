@@ -122,6 +122,10 @@ export class DataService {
     return of({result: 'ok'});
   }
 
+  logout(): Observable<string> {
+    return of("null");
+  }
+
   getRole(): Observable<{role: string}> {
     return of({role: 'ADMIN'});
   }

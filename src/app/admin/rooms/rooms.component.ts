@@ -25,7 +25,7 @@ export class RoomsComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private formResetService: FormResetService,
-              private autService: AuthService) { }
+              private authService: AuthService) { }
 
   loadData() {
      this.dataService.getRooms().subscribe(
@@ -70,9 +70,18 @@ export class RoomsComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
-    if (this.autService.role === 'ADMIN') {
+    if (this.authService.role === 'ADMIN') {
       this.isAdminUser = true;
     }
+    this.authService.roleSetEvent.subscribe(
+      next => {
+        if (next === 'ADMIN') {
+          this.isAdminUser = true;
+        } else {
+          this.isAdminUser = false;
+        }
+      }
+    );
   }
 
   setRoom(id: number) {
