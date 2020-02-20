@@ -28,7 +28,9 @@ export class AuthService {
 
   setUpRole() {
     this.dataService.getRole().subscribe(
-      next => this.role = next.role
+      next => {
+        this.role = next.role;
+      }
     );
   }
 

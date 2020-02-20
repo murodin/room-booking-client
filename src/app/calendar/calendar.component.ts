@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {formatDate} from '@angular/common';
 import {query} from '@angular/animations';
 import {User} from '../model/User';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-calendar',
@@ -20,9 +21,12 @@ export class CalendarComponent implements OnInit {
 
   message = '';
 
+  isAdminUser = false;
+
   constructor(private dataService: DataService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private authService: AuthService) { }
 
   loadData() {
     this.message = 'Loading...';
@@ -45,6 +49,9 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
    this.loadData();
+   if (this.authService.role === 'ADMIN') {
+     this.isAdminUser = true;
+   }
   }
 
   editBooking(id: number) {
